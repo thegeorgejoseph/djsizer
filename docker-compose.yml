@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./backend:/api
+    command: python manage.py runserver 0.0.0.0:8000 --settings=backend.settings.dev
+    depends_on:
+      - db
+  web:
+    build:
+      context: ./web
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./web:/web
+    command: bash -c "npm install && npm start"
+    depends_on:
+      - backend
+
